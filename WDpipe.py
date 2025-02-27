@@ -10,6 +10,7 @@ import wd_fit_tools
 import pandas as pd
 import lmfit
 plot=True
+wave_type="a" #change this to "v" if spectrum is in vacuum wavelength
 c = 299792.458 # Speed of light in km/s
 infile=sys.argv[1]
 wave_in,flux,err=np.loadtxt(infile,usecols=(0,1,2),delimiter=",",unpack=True)
@@ -25,22 +26,35 @@ WDclass, prob= wd_fit_tools.WDclassify(wave_in,flux,err)
 err=err[(wave_in>=3500)&(wave_in<9000)] 
 flux=flux[(wave_in>=3500)&(wave_in<9000)]
 wave_in=wave_in[(wave_in>=3500)&(wave_in<9000)]
+#try:
+ #   wave_type=sys.argv[2]
+  #  if wave_type!="a" or wave_type!="v":
+   #     print("specify air a, or vacuum v wavelength, air wavelength assumed")
+    #    wave_type="a"
+#except:
+ #   print("specify air a, or vacuum v wavelength, air wavelength assumed")
+  #  wave_type="a"
+
 try:
-    wave_type=sys.argv[2]
-except:
-    print("specify air a, or vacuum v wavlength, air wavelength assumed")
-    wave_type="a"
-try:
-    GaiaID=sys.argv[3]
-    parallax=float(sys.argv[4])
-    Gaia_G_mag=float(sys.argv[5])
+    parallax=float(sys.argv[2])
     if parallax==0:
         parallax=0.00001 #0 parallax breaks things
 except:
     parallax=None
-    GaiaID=None
+try:
+    Gaia_G_mag=float(sys.argv[3])    
+except:
     Gaia_G_mag=None
-print(GaiaID,parallax, Gaia_G_mag)
+if Gaia_G_mag!=None and parallax!=None:
+    try:
+        GaiaID=sys.argv[4]
+    except:
+        GaiaID=None
+else:
+    try:
+        GaiaID=sys.argv[2]
+    except:
+        GaiaID=None
 if wave_type=="a":
     wave=wave_in/(1.0 + 2.735182e-4 + 131.4182/wave_in**2 + 2.76249e8/wave_in**4) #models are in vacuum wavelength so this conversion may be needed if spectrum is in air wavelenght
 elif wave_type=="v":
@@ -74,7 +88,6 @@ else:
     eT_H=np.array(tl[u'eteff_H']).astype(float)
     elog_H=np.array(tl[u'elogg_H']).astype(float)
     spec_n, cont_flux = wd_fit_tools.norm_spectra(spectra,mod=False)#,g_line_crop,mod=False)
-
     if (GaiaID!= None) and (GaiaID in sourceID):
         first_T=T_H[sourceID==GaiaID][0]
         first_g=log_H[sourceID==GaiaID][0]*100
@@ -107,7 +120,7 @@ else:
     
 #-----------------------load PCA model for precise fit------------------------------------------------------
     wref=np.load("wref_4most.npy") #this is the models reference wavelength
-    with open("emu_file_4most", 'rb') as pickle_file:
+    with open("emu_file_4most.mod", 'rb') as pickle_file:
         emu= pickle.load(pickle_file)
 #-----------------------------------------------------------------------------------------
 #set parameters to use in the fit

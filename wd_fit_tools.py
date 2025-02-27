@@ -1,4 +1,4 @@
-import model_processing
+#import model_processing
 #import emulator_DA
 import numpy as np
 import matplotlib.pyplot as plt
@@ -572,7 +572,7 @@ def WDclassify(wave,flux,err):
     from sklearn.metrics import confusion_matrix
     from sklearn.metrics import accuracy_score
     from sklearn.ensemble import RandomForestClassifier
-    with open("training_file_test", 'rb') as f:
+    with open("training_file.mod", 'rb') as f:
         kf = pickle._load(f,fix_imports=True)
     err=err[(wave>=3650)&(wave<9800)]
     flux=flux[(wave>=3650)&(wave<9800)]
