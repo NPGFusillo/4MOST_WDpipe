@@ -1,10 +1,10 @@
-The code is a "stand alone version" of the white dwarf pipeline currently implemented in 4MOST.
-The first step is a random forest spectral classifier trained on 20000 SDSS I - IV white dwarf spectra.
-Only spectra classfied as DA (white dwarfs with only Balmer lines in their spectra) are than passed to a fitting script to evaluate Teff and logg for the white dwarf.
+The code is a "stand alone" version of the white dwarf pipeline currently implemented in 4MOST.
+First of all the script uses a random forest classifier trained on 20000 SDSS I - IV white dwarf spectra to classify the input spectrum into 27 possible white dwarf spectral classes.
+Only spectra classfied as DA (white dwarfs with only Balmer lines in their spectra) are than passed to a fitting script to calculate Teff and logg for the white dwarf.
 This script uses Pier-Emmanuel Tremblay's 1D pure-hydrogen models available at:
 https://warwick.ac.uk/fac/sci/physics/research/astro/people/tremblay/modelgrids/
 
-Rather than interpolating models at fixed Teff logg points this fitting routine uses a principle component analysis (PCA) approach to generate additional models at arbitrary Teff and logg. This is an idea of idea of Stuart Littlefair (Univeristy of Sheffield). Please see his page for a complete understanding:https://github.com/StuartLittlefair/wd_emulator
+Rather than interpolating the fixed Teff logg grid point models to generate additional models, this fitting routine uses a principle component analysis (PCA) approach to generate additional models at arbitrary Teff and logg. This is an idea developed by Stuart Littlefair (Univeristy of Sheffield). Please see his repository for a complete understanding: https://github.com/StuartLittlefair/wd_emulator
 
 Usage:
 Usage:
