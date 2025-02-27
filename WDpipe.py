@@ -1,3 +1,19 @@
+"""
+WDpipe.py
+The script takes 4 command line arguments.
+
+Usage:
+    python WDpipe.py spec.csv parallax Gaia_G_mag GaiaID
+
+Arguments:
+    spec.csv   :Spectrum to analyze saved as a csv file with 3 columns, wavelngth, flux, flux_error
+    parallax   :Parallax of the obejct (optional)
+    Gaia_G_mag :Gaia G band magnitude of the object (optional)
+    GaiaID     :Gaia Source_ID of the object (optional)
+
+Example:
+    python WDpipe.py myspec.csv 11.2 18.3 4652527353933233968
+"""
 import numpy as np
 import sys
 import matplotlib.pyplot as plt
